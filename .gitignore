@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+fashionify-backend/node_modules/
+
+# Env files / secrets
+.env
+fashionify-backend/.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Builds
+build/
+dist/
+.out/
+.next/
+
+# OS / misc
+.DS_Store
+Thumbs.db

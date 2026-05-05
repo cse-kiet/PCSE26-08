@@ -1,0 +1,366 @@
+:root {
+  --bg: #0b0b0f;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --text: #fff;
+  --input-bg: #1c1c24;
+  --accent: #ff007a;
+}
+
+body.light {
+  --bg: #f9f6ff;
+  --card-bg: #ffffff;
+  --text: #1c1c1c;
+  --input-bg: #C8A2C8;
+  --accent: #9f6fef;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+header {
+  flex-shrink: 0; /* Make sure it doesn't shrink */
+}
+
+body {
+ 
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  padding-bottom: 80px;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+
+header {
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #ff007a;
+  height: 50px;
+  left: 0;
+  width: 100%;
+  align-items: top;
+  position: fixed;
+}
+
+
+body.light header {
+  background-color: #c8a2c8;
+  color: var(--bg-light);
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  justify-content: start;
+  margin-left: 30px;
+}
+
+.section {
+  padding: 2rem;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.input-with-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.unit-btn {
+  padding: 0.3rem 0.8rem;
+  border: none;
+  background-color: #ff007a;
+  color: white;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+
+.result-box {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--bg);
+  
+  border-left: 5px solid #ff007a;
+  border-radius: 1rem;
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+}
+
+.submit-btn {
+  font-size: 1.2rem;
+  color: white;
+  background-color: #ff007a; /* Dark theme color */
+  padding: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+body.light .submit-btn {
+  font-size: 1.2rem;
+  background-color: var(  --input-bg); /* Light theme accent */
+  color: var(--text);
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+.submit-btn:hover {
+  background-color: #ff3399;
+}
+
+footer {
+  background-color: #444;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  position: sticky;
+  width: 100%;
+  align-items: baseline;
+}
+body.light footer {
+  background-color: #C8A2C8; ;
+  color: var(--bg-light);
+}
+
+
+footer a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+}
+
+.quiz-container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 30px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  background: var(--card-bg);
+  margin-top: 600px; /* or whatever your header height + spacing is */
+
+}
+
+.quiz-container h2 {
+  font-size: 2.5rem;
+  color: #ff007a;
+  margin-bottom: 30px;
+}
+
+.quiz-question {
+  margin-bottom: 25px;
+}
+
+.quiz-question label,
+.quiz-question p {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--text);
+  margin-right:50px;
+}
+
+.quiz-answer {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.input-with-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.input-with-toggle input {
+  padding: 10px 15px;
+  width: 150px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+}
+
+
+.unit-btn {
+  padding: 10px 15px;
+  background-color:  var(--bg);
+  color:  var(--text);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.unit-btn.light {
+  padding: 10px 15px;
+  background-color:  var(--bg-light);;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.gender-options {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.gender-card {
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  width: 120px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+ 
+}
+
+.gender-card.light {
+  background-color: #ffe3f0;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  width: 120px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.gender-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.gender-card span {
+  font-weight: 600;
+  color: #333;
+}
+
+.gender-card.selected {
+  border: 2px solid #ff007a;
+  box-shadow: 0 0 12px #ff80b3;
+  transform: scale(1.05);
+}
+.undertone-options {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.undertone-card {
+  background-color: #fff4f8;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  width: 120px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.undertone-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.undertone-card span {
+  font-weight: 600;
+  color: #333;
+}
+
+.undertone-card.selected {
+  border: 2px solid #ff007a;
+  box-shadow: 0 0 12px #ff80b3;
+  transform: scale(1.05);
+}
+
+.theme-toggle {
+  top: 48px;
+}
+
+/* Cute Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 32px;
+  margin-right:50px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #444;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "🌙";
+  height: 24px;
+  width: 24px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+input:checked + .slider {
+  background-color: white;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+  content: "☀️";
+}

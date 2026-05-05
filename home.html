@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fashionify Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+
+
+  <style>
+    :root {
+      --primary-dark: #FF007A;
+      --bg-dark: #1C1C24;;
+      --text-dark: #fff;
+      --accent: #C8A2C8;
+      --bg-light: #fff;
+      --text-light: #C8A2C8;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.3s, color 0.3s;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      padding-bottom: 80px;
+        overflow-x: hidden;
+    }
+
+    body.light {
+       background:  #fdf6ff;
+      color: var(--primary-light);
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 1rem 2rem;
+      background-color: #FF007A;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .theme-toggle,
+    .logo,
+    .header-icons {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+
+    body.light header {
+      background-color:  #C8A2C8 ;
+      color:var(--bg-light);
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      justify-content: start;
+      font-size: 24px;
+      margin-left: 30px;
+
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .header-icons a {
+      color: white;
+      text-decoration: none;
+      margin-right: 30px;
+      margin-left:600px;
+      font-size: 1.4rem;
+    }
+
+    .theme-toggle {
+    top: 48px;
+
+  }
+
+  /* Cute Toggle Switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 32px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+     background-color: #444;
+    transition: .4s;
+    border-radius: 34px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "🌙";
+    height: 24px;
+    width: 24px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  input:checked + .slider {
+    background-color: white;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+    content: "☀️";
+  }
+
+    .section {
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: color 0.3s ease;
+    }
+
+    body.light .section-title {
+      color: #000;
+    }
+
+    .section-title::before,
+    .section-title::after {
+      content: '✦';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--accent);
+      transition: color 0.3s ease;
+    }
+
+    body.light .section-title::before,
+    body.light .section-title::after {
+      color: var(--primary-dark);
+    }
+
+    .section-title::before {
+      left: -40px;
+    }
+
+    .section-title::after {
+      right: -40px;
+    }
+
+    .section:hover .section-title::after {
+      transform: scaleX(1);
+    }
+
+    .carousel-container {
+      position: relative;
+      padding: 0 40px;
+      margin: 0 auto;
+      max-width: 1400px;
+    }
+
+    .carousel {
+      display: flex;
+      gap: 1.5rem;
+      scroll-snap-type: x mandatory;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 1rem 0;
+      scroll-behavior: smooth;
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-controls {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dark);
+      font-size: 1.2rem;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s;
+      z-index: 2;
+    }
+
+    .carousel-controls:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-prev {
+      left: 0;
+    }
+
+    .carousel-next {
+      right: 0;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1rem;
+    }
+
+    .carousel-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .carousel-dot.active {
+      background: #FF007A;
+      transform: scale(1.2);
+    }
+
+    body.light .carousel-dot {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    body.light .carousel-dot.active {
+      background: #C8A2C8;
+    }
+
+    .carousel-item {
+      flex: 0 0 auto;
+      width: 300px;
+      height: 250px;
+      border-radius: 20px;
+      overflow: hidden;
+      scroll-snap-align: start;
+      position: relative;
+      transition: transform 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .carousel-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay-text {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+      color: white;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .carousel-item:hover .overlay-text {
+      transform: translateY(0);
+    }
+
+    .style-quiz-container {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      padding: 3rem;
+      border-radius: 20px;
+      margin: 2rem 0;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .style-quiz-container button {
+      background: #FF007A;
+      color: white;
+      border: none;
+      padding: 1.2rem 2.5rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .style-quiz-container button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      background: #ff3399;
+    }
+
+    body.light .style-quiz-container button {
+      background: #C8A2C8;
+    }
+
+    body.light .style-quiz-container button:hover {
+      background: #d4b5d4;
+    }
+
+    body.light .style-quiz-container h3 {
+      color: #C8A2C8;
+    }
+
+    .style-tips {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .style-tips > div {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      padding: 2rem;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .style-tips > div:hover {
+      transform: translateY(-5px);
+    }
+
+    .style-tips h3 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+
+    .style-tips p {
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #FF007A;;
+      color:var(--bg-dark);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    body.light footer {
+      background-color: #C8A2C8; ;
+      color: var(--bg-light);
+    }
+
+    footer a {
+      text-decoration: none;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    /* New Search Bar Styles */
+    .search-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .search-bar {
+      width: 100%;
+      padding: 15px 60px 15px 20px;
+      border: 2px solid var(--accent);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-dark);
+      font-size: 16px;
+      backdrop-filter: blur(5px);
+    }
+
+    .search-bar::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-icons {
+      position: absolute;
+      right: 15px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .search-icon {
+      color: #fff;
+      cursor: pointer;
+      font-size: 20px;
+      transition: transform 0.3s;
+      border: #fff;
+    }
+
+    .search-icon:hover {
+      transform: scale(1.1);
+    }
+
+    /* Sales Section Styles */
+    .sales-banner {
+      background: linear-gradient(135deg, rgba(255, 0, 122, 0.1), rgba(200, 162, 200, 0.1));
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border-radius: 10px;
+    }
+
+    .sales-item {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sales-item img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      
+    }
+
+    .sales-item h3 {
+      color: var(--text-dark);
+      margin: 0.5rem 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .sales-item p {
+      color: var(--accent);
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+    }
+
+    .discount-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff4444;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .expiry-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-dark);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+    }
+
+    /* No animation for sales items */
+    .sales-item:hover {
+      transform: none;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      header {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+
+      .search-container {
+        order: 2;
+        margin: 1rem 0;
+      }
+
+      .header-icons {
+        order: 3;
+        justify-content: center;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .section-title::before,
+      .section-title::after {
+        display: none;
+      }
+
+      .carousel-item {
+        width: 250px;
+        height: 300px;
+      }
+
+      .carousel-controls {
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    body.light .style-tips h3 {
+      color: #C8A2C8 !important;
+    }
+
+    body.light .style-tips > div {
+      background: #ffffff !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    body.light .style-tips p {
+      color: #000 !important;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">Fashionify</div>
+    <div class="search-container">
+      <input type="text" class="search-bar" placeholder="Search for outfits, styles, or trends...">
+      <div class="search-icons">
+        <i class="fa fa-search search-icon"></i>
+        <i class="fa fa-camera search-icon" title="Search by image"></i>
+      </div>
+    </div>
+    <div class="header-icons">
+      <a href="favorites.html"><i class="fa fa-heart"></i></a>
+      <label class="switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <!-- Sales Section -->
+    <div class="section">
+      <h2 class="section-title">Latest Sales</h2>
+      <div class="sales-banner">
+        <div class="carousel-container">
+          <button class="carousel-controls carousel-prev"><</button>
+          <div class="carousel" id="salesCarousel">
+            <div class="carousel-item sales-item">
+              <div class="discount-badge">-70%</div>
+              <img src="myntra.svg" alt="Myntra">
+              <h3>Myntra</h3>
+              <p>End of Season Sale</p>
+              <div class="expiry-badge">Ends in 2 days</div>
+            </div>
+            <div class="carousel-item sales-item">
+              <div class="discount-badge">-50%</div>
+              <img src="meeshop.svg" alt="Meesho">
+              <h3>Meesho</h3>
+              <p>Mega Fashion Sale</p>
+              <div class="expiry-badge">Ends in 5 days</div>
+            </div>
+            <div class="carousel-item sales-item">
+              <div class="discount-badge">-60%</div>
+              <img src="nykaa.svg" alt="Nykaa Fashion">
+              <h3>Nykaa Fashion</h3>
+              <p>Pink Friday Sale</p>
+              <div class="expiry-badge">Ends in 3 days</div>
+            </div>
+            <div class="carousel-item sales-item">
+              <div class="discount-badge">-40%</div>
+              <img src="amazon.svg" alt="Amazon Fashion">
+              <h3>Amazon Fashion</h3>
+              <p>Great Indian Festival</p>
+              <div class="expiry-badge">Ends in 7 days</div>
+            </div>
+            <div class="carousel-item sales-item">
+              <div class="discount-badge">-55%</div>
+              <img src="flipkart.svg" alt="Flipkart">
+              <h3>Flipkart</h3>
+              <p>Big Billion Days</p>
+              <div class="expiry-badge">Ends in 4 days</div>
+            </div>
+          </div>
+          <button class="carousel-controls carousel-next">></button>
+          <div class="carousel-dots" id="salesDots"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">For <span class="fancy-text">her</span></h2>
+
+      <div class="carousel-container">
+        <button class="carousel-controls carousel-prev">❮</button>
+        <div class="carousel" id="herCarousel">
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/90/fa/af/90faaf95647d72ce13b43106e51eefeb.jpg" alt="College Fits" /><div class="overlay-text">College Wear</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/e3/bf/fb/e3bffb1ed9fd5b6f7d92d5ae5e6544bc.jpg" alt="Party Wear" /><div class="overlay-text">Party Wear</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/1c/95/f0/1c95f06606f937ca2a3360994b3c5901.jpg" alt="Ethnic Wear" /><div class="overlay-text">Ethnic Wear</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/2e/6b/73/2e6b733885d2e15dd63ea7c5ee580c57.jpg" alt="Western Wear" /><div class="overlay-text">Western Wear</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/57/6b/df/576bdf5ce8cd00e6df882e6fbd458a57.jpg" alt="Wedding Wear" /><div class="overlay-text">Wedding Wear</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/ab/46/3b/ab463b5f69a6481e8897066635af4cd2.jpg" alt="Wedding Wear" /><div class="overlay-text">Business Formals</div></div>
+        </div>
+        <button class="carousel-controls carousel-next">></button>
+        <div class="carousel-dots" id="herDots"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">For <span class="fancy-text">him</span></h2>
+      <div class="carousel-container">
+        <button class="carousel-controls carousel-prev"><</button>
+        <div class="carousel" id="himCarousel">
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/df/3a/a1/df3aa15b6b4b184a8b02b262f569c646.jpg" alt="College Fits" /><div class="overlay-text">College Wear</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/89/37/09/8937095ad11c77c613b05cd5e09e663a.jpg" alt="Party Wear" /><div class="overlay-text">Party Wear</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/72/c9/2e/72c92ebadb4705054c14c9e530d25f87.jpg" alt="Ethnic Wear" /><div class="overlay-text">Ethnic Wear</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/7f/35/5c/7f355ca0b42aec63a541d55829a76299.jpg" alt="Western Wear" /><div class="overlay-text">Western Wear</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/7c/d9/99/7cd999829eec71df2f86ba20703ad538.jpg" alt="Wedding Wear" /><div class="overlay-text">Wedding Wear</div></div>
+           <div class="carousel-item"><img src="https://i.pinimg.com/736x/b6/8c/43/b68c43ce8f82e4037d78c751610d1420.jpg" alt="Wedding Wear" /><div class="overlay-text">Business Formals</div></div>
+        </div>
+        <button class="carousel-controls carousel-next">></button>
+        <div class="carousel-dots" id="himDots"></div>
+      </div>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Shoes</h2>
+      <div class="carousel-container">
+        <button class="carousel-controls carousel-prev"><</button>
+        <div class="carousel" id="shoesCarousel">
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/a2/5f/dd/a25fdd0ab571331cfa7119b31e691afe.jpg" alt="Shoes 1" /><div class="overlay-text">Sports Shoes</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/9e/14/dd/9e14ddeba7ce12d4dacd02da96dd54d4.jpg" alt="Shoes 2" /><div class="overlay-text">Heels</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/83/94/56/83945654b0986ad20c3009b5187dfe41.jpg" alt="Shoes 2" /><div class="overlay-text">Formal Wear</div></div>
+         <div class="carousel-item"><img src="https://i.pinimg.com/736x/5f/d1/cd/5fd1cd141baaf977cfc0a60fd0e43d8e.jpg" alt="Shoes 2" /><div class="overlay-text">Semi Formals</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/8e/a2/d9/8ea2d98c1b515236a0833add5655f090.jpg" alt="Shoes 2"/><div class="overlay-text">Daily Wear</div></div>
+            <div class="carousel-item"><img src="https://i.pinimg.com/736x/4d/6c/3d/4d6c3d34c6d6ebaa09d8f105afc2e159.jpg" alt="Shoes 2" /><div class="overlay-text">Wedding Wear</div></div>
+        </div>
+        <button class="carousel-controls carousel-next">></button>
+        <div class="carousel-dots" id="shoesDots"></div>
+      </div>
+    </div>
+     <div class="section">
+      <h2 class="section-title">Accessories</h2>
+      <div class="carousel-container">
+        <button class="carousel-controls carousel-prev"><</button>
+        <div class="carousel" id="accessoriesCarousel">
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/23/41/45/2341455db9fb17494d04e36283ae424a.jpg" alt="Accessory 1" /><div class="overlay-text">Watches</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/43/ef/67/43ef67d7c365a2ed716de0d4252aee64.jpg" alt="Accessory 2" /><div class="overlay-text">Sunglasses</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/8c/32/3b/8c323b416e42bebc6e2bc391abcb9d32.jpg" alt="Accessory 2" /><div class="overlay-text">Bracelets</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/87/71/b5/8771b50159ce8013bce3d97b7e02403b.jpg" alt="Accessory 2" /><div class="overlay-text">Studs</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/9a/99/22/9a99227fa1c7a42c0a91d64ea88ad152.jpg" alt="Accessory 2" /><div class="overlay-text">Neck Pieces</div></div>
+        </div>
+        <button class="carousel-controls carousel-next">></button>
+        <div class="carousel-dots" id="accessoriesDots"></div>
+      </div>
+      
+    </div>
+      <div class="section">
+      <h2 class="section-title">Seasonal Fashion</h2>
+      <div class="carousel-container">
+        <button class="carousel-controls carousel-prev"><</button>
+        <div class="carousel" id="seasonalCarousel">
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/52/b3/3d/52b33df05a66b52af5a79da1880d3dca.jpg" alt="Shoes 1" /><div class="overlay-text">Summers</div></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/f9/25/7c/f9257c95f2638334e92d0bd860a726e5.jpg" alt="Shoes 2" /><div class="overlay-text">Winters</div></div>
+         <div class="carousel-item"> <img src="https://i.pinimg.com/736x/1c/f2/51/1cf2512d0ab1dd1d416a69d2c4d72ce8.jpg" alt="Shoes 2" /><div class="overlay-text">Rainy</div></div>
+         <div class="carousel-item"> <img src="https://i.pinimg.com/736x/cb/68/67/cb6867b61fc2c2defbdf3feb3b5b7474.jpg" alt="Shoes 2" /><div class="overlay-text">Autumn</div></div>
+         <div class="carousel-item"> <img src="https://i.pinimg.com/736x/3d/93/c3/3d93c3186ec9bb42ce8f8cf792eb9e97.jpg" alt="Shoes 2" /><div class="overlay-text">Spring</div></div>
+       
+        </div>
+        <button class="carousel-controls carousel-next">></button>
+        <div class="carousel-dots" id="seasonalDots"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Capsule Wardrobe</h2>
+      <div class="carousel-container">
+        <button class="carousel-controls carousel-prev"><</button>
+        <div class="carousel" id="capsuleCarousel">
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/38/0f/a0/380fa09a3b6e3dec626a03e40071b54c.jpg" alt="Capsule Look 1" /></div>
+          <div class="carousel-item"><img src="https://i.pinimg.com/736x/e4/0a/fc/e40afc20934cbcbc7a8e684aac5a893b.jpg" alt="Capsule Look 2" /></div>
+          <div class="carousel-item">
+            <img src="https://i.pinimg.com/736x/51/35/38/513538ab1425156cb99818eb9621a31b.jpg" alt="Capsule Look 3" />
+          </div>
+             <div class="carousel-item">
+            <img src="https://i.pinimg.com/736x/03/45/a6/0345a6ecb24fc20137cd5d84b66d04eb.jpg" alt="Capsule Look 4" />
+          </div>
+             <div class="carousel-item">
+            <img src="https://i.pinimg.com/736x/25/65/1b/25651b5df5e835cb64876b6c5460b9eb.jpg" alt="Capsule Look 5" />
+          </div>
+             <div class="carousel-item">
+            <img src="https://i.pinimg.com/736x/64/b3/08/64b308dc7b556816c436b62dda85645d.jpg" alt="Capsule Look 6" />
+        </div></div>
+        <button class="carousel-controls carousel-next">></button>
+        <div class="carousel-dots" id="capsuleDots"></div>
+      </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Trending Styles</h2>
+    <div class="carousel-container">
+      <button class="carousel-controls carousel-prev">&lt;</button>
+      <div class="carousel" id="trendingCarousel">
+        <div class="carousel-item">
+          <img src="https://i.pinimg.com/736x/45/02/61/4502618c2043efa09bd718d0b03f7a40.jpg" alt="Trending Style 1" />
+          <div class="overlay-text">Y2K Revival</div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://i.pinimg.com/736x/c1/fc/7a/c1fc7abed313e7654ae4e1cc08037585.jpg" alt="Trending Style 2" />
+          <div class="overlay-text">Minimalist</div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://i.pinimg.com/736x/42/30/20/423020095b41159c3cb9bf511622c89f.jpg" alt="Trending Style 3" />
+          <div class="overlay-text">Streetwear</div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://i.pinimg.com/736x/f5/7d/68/f57d683c1c233c6da6b488ff4eacb496.jpg" alt="Trending Style 4" />
+          <div class="overlay-text">Coastal Grandmother</div>
+        </div>
+      </div>
+      <button class="carousel-controls carousel-next">&gt;</button>
+      <div class="carousel-dots" id="trendingDots"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Perfect Combinations</h2>
+    <div class="carousel-container">
+      <button class="carousel-controls carousel-prev">❮</button>
+      <div class="carousel" id="combinationCarousel">
+        <div class="carousel-item">
+          <img src="https://i.pinimg.com/736x/4f/1e/34/4f1e34c11317d82a6b8c7b6d55258f38.jpg" alt="Combination 1" />
+          <div class="overlay-text">Casual Chic</div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://i.pinimg.com/736x/53/8f/ea/538fea28e2fea23e1d9653f4d87060c7.jpg" alt="Combination 2" />
+          <div class="overlay-text">Business Casual</div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://i.pinimg.com/736x/76/44/ba/7644ba60c27f2b57305269ff242f3a67.jpg" alt="Combination 3" />
+          <div class="overlay-text">Weekend Vibes</div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://i.pinimg.com/736x/0c/6e/9d/0c6e9d3d178afe20c211a84b1686f068.jpg" alt="Combination 4" />
+          <div class="overlay-text">Date Night</div>
+        </div>
+      </div>
+      <button class="carousel-controls carousel-next">❯</button>
+      <div class="carousel-dots" id="combinationDots"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Find Your Style</h2>
+    <div class="style-quiz-container">
+      <h3 style="color: var(--accent); margin-bottom: 1rem;">Take Our Style Quiz</h3>
+      <p style="margin-bottom: 1.5rem;">Discover your perfect style match and get personalized outfit recommendations!</p>
+      <button onclick="location.href='quiz.html'">Start Quiz</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Style Tips</h2>
+    <div class="style-tips" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+      <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px;">
+        <h3 style="color: #FF007A; margin-bottom: 0.5rem;">Color Coordination</h3>
+        <p>Learn how to mix and match colors for the perfect outfit combination.</p>
+      </div>
+      <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px;">
+        <h3 style="color: #FF007A; margin-bottom: 0.5rem;">Body Type Guide</h3>
+        <p>Discover the best styles that complement your body type.</p>
+      </div>
+      <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px;">
+        <h3 style="color: #FF007A; margin-bottom: 0.5rem;">Seasonal Dressing</h3>
+        <p>Tips for dressing appropriately for different weather conditions.</p>
+      </div>
+    </div>
+  </div>
+
+    <footer>
+      <a href="profile.html"><i class="fa fa-user"></i><span>Profile</span></a>
+      <a href="home.html"><i class="fa fa-home"></i><span>Home</span></a>
+      <a href="ootd.html"><i class="fa fa-camera"></i><span>OOTD</span></a>
+       <a href="blog.html"><i class="fa fa-pencil"></i><span>Blog</span></a>
+    </footer>
+
+    <script>
+      const toggle = document.getElementById('themeToggle');
+      toggle.addEventListener('change', () => {
+        document.body.classList.toggle('light');
+      });
+
+      function initializeCarousel(carouselId, dotsId) {
+        const carousel = document.getElementById(carouselId);
+        const dotsContainer = document.getElementById(dotsId);
+        const items = carousel.querySelectorAll('.carousel-item');
+        const prevBtn = carousel.parentElement.querySelector('.carousel-prev');
+        const nextBtn = carousel.parentElement.querySelector('.carousel-next');
+        
+        // Create dots
+        items.forEach((_, index) => {
+          const dot = document.createElement('div');
+          dot.classList.add('carousel-dot');
+          if (index === 0) dot.classList.add('active');
+          dot.addEventListener('click', () => {
+            carousel.scrollTo({
+              left: index * (carousel.offsetWidth + 24),
+              behavior: 'smooth'
+            });
+            updateDots(index);
+          });
+          dotsContainer.appendChild(dot);
+        });
+
+        // Update dots
+        function updateDots(activeIndex) {
+          dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+            dot.classList.toggle('active', index === activeIndex);
+          });
+        }
+
+        // Navigation
+        prevBtn.addEventListener('click', () => {
+          carousel.scrollBy({
+            left: -carousel.offsetWidth - 24,
+            behavior: 'smooth'
+          });
+        });
+
+        nextBtn.addEventListener('click', () => {
+          carousel.scrollBy({
+            left: carousel.offsetWidth + 24,
+            behavior: 'smooth'
+          });
+        });
+
+        // Update dots on scroll
+        carousel.addEventListener('scroll', () => {
+          const activeIndex = Math.round(carousel.scrollLeft / (carousel.offsetWidth + 24));
+          updateDots(activeIndex);
+        });
+      }
+
+      // Initialize all carousels
+      initializeCarousel('salesCarousel', 'salesDots');
+      initializeCarousel('herCarousel', 'herDots');
+      initializeCarousel('himCarousel', 'himDots');
+      initializeCarousel('shoesCarousel', 'shoesDots');
+      initializeCarousel('accessoriesCarousel', 'accessoriesDots');
+      initializeCarousel('seasonalCarousel', 'seasonalDots');
+      initializeCarousel('capsuleCarousel', 'capsuleDots');
+      initializeCarousel('trendingCarousel', 'trendingDots');
+      initializeCarousel('combinationCarousel', 'combinationDots');
+    </script>
+  </div>
+</body>
+
+</html>

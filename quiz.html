@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Body Type Quiz - Fashionify</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-dark: #FF007A;
+      --bg-dark: #1C1C24;
+      --text-dark: #fff;
+      --accent: #FF007A;
+      --bg-light: #fff;
+      --text-light: #C8A2C8;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.3s, color 0.3s;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      padding-bottom: 80px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body.light {
+      background: #fdf6ff;
+      color: #000;
+    }
+
+    body.light .quiz-container {
+      background: linear-gradient(135deg, rgba(200, 162, 200, 0.1), rgba(200, 162, 200, 0.05));
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 1rem 2rem;
+      background-color: #FF007A;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    body.light header {
+      background-color: #C8A2C8;
+      color: var(--bg-light);
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 24px;
+      margin-left: 30px;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-left: auto;
+    }
+
+    .header-icons a {
+      color: white;
+      text-decoration: none;
+      margin-right: 30px;
+      margin-left: 0;
+      font-size: 1.4rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 32px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #444;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "🌙";
+      height: 24px;
+      width: 24px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: .4s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    input:checked + .slider {
+      background-color: white;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+      content: "☀️";
+    }
+
+    .quiz-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(255, 0, 122, 0.1), rgba(255, 0, 122, 0.05));
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      flex: 1;
+    }
+
+    .quiz-container h2 {
+      margin-bottom: 2rem;
+      font-size: 2.2rem;
+      color: var(--accent);
+    }
+
+    body.light .quiz-container h2 {
+      color: var(--text-light);
+    }
+
+    .quiz-question {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .quiz-question label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .input-with-toggle {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input[type="number"] {
+      padding: 0.8rem;
+      border: 2px solid var(--accent);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      color: inherit;
+      width: 150px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .unit-btn {
+      padding: 0.8rem 1.5rem;
+      background: white;
+      border: none;
+      border-radius: 5px;
+      color: var(--bg-dark);
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.3s;
+    }
+
+    .unit-btn:hover {
+      transform: translateY(-2px);
+      background: #f0f0f0;
+    }
+
+    .gender-options, .undertone-options {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      justify-content: center;
+    }
+
+    .gender-card, .undertone-card {
+      padding: 1rem;
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s;
+      min-width: 120px;
+    }
+
+    .gender-card:hover, .undertone-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .gender-card.selected, .undertone-card.selected {
+      background: white;
+      color: var(--bg-dark);
+    }
+
+    body.light .gender-card,
+    body.light .undertone-card {
+      border-color: var(--text-light);
+    }
+
+    body.light .gender-card.selected,
+    body.light .undertone-card.selected {
+      background: var(--text-light);
+      color: white;
+    }
+
+    .gender-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+
+    .undertone-card span {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .submit-btn {
+      background: white;
+      color: var(--bg-dark);
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+      margin: 2rem auto 0;
+      transition: transform 0.3s;
+      font-size: 1.1rem;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      background: #f0f0f0;
+    }
+
+    .result-box {
+      margin-top: 2rem;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .result-box h3 {
+      color: var(--accent);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    body.light .result-box h3 {
+      color: var(--text-light);
+    }
+
+    .back-to-profile {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 1rem 2rem;
+      background: white;
+      color: var(--bg-dark);
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: transform 0.3s;
+      font-size: 1.1rem;
+    }
+
+    .back-to-profile:hover {
+      transform: translateY(-2px);
+      background: #f0f0f0;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #FF007A;
+      color: var(--bg-dark);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    body.light footer {
+      background-color: #C8A2C8;
+      color: var(--bg-light);
+    }
+
+    footer a {
+      text-decoration: none;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    body.light .unit-btn,
+    body.light .submit-btn,
+    body.light .back-to-profile {
+      background: var(--text-light);
+      color: white;
+    }
+
+    body.light .unit-btn:hover,
+    body.light .submit-btn:hover,
+    body.light .back-to-profile:hover {
+      background: var(--primary-dark);
+    }
+
+    @media (max-width: 768px) {
+      .quiz-container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+
+      .gender-options, .undertone-options {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .gender-card, .undertone-card {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Fashionify</div>
+      <div class="header-icons">
+  <a href="favorites.html"><i class="fa fa-heart"></i></a>
+  <label class="switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider"></span>
+  </label>
+ </div>
+  </header>
+
+ <section class="quiz-container">
+  <h2>Discover Your Fit</h2>
+  <form id="measurementQuiz">
+    <!-- Gender -->
+<div class="quiz-question">
+  <p>What is your gender?</p>
+  <div class="gender-options">
+    <div class="gender-card" data-gender="Male">
+      <img src="person.png" title="person standing icons" alt="Male" />
+    </div>
+    <div class="gender-card" data-gender="Female">
+      <img src="woman.png" alt="Female" />
+    </div>
+    <input type="hidden" name="gender" id="gender" required />
+  </div>
+</div>
+
+    <!-- Height -->
+    <div class="quiz-question">
+      <label for="height">Your Height:</label>
+      <div class="input-with-toggle">
+        <input type="number" id="height" name="height" required />
+        <button type="button" class="unit-btn" data-target="height">cm</button>
+      </div>
+    </div>
+
+    <!-- Shoulders -->
+    <div class="quiz-question">
+      <label for="shoulders">Shoulder Width:</label>
+      <div class="input-with-toggle">
+        <input type="number" id="shoulders" name="shoulders" required />
+        <button type="button" class="unit-btn" data-target="shoulders">cm</button>
+      </div>
+    </div>
+
+    <!-- Chest -->
+    <div class="quiz-question">
+      <label for="chest">Chest/Bust Size:</label>
+      <div class="input-with-toggle">
+        <input type="number" id="chest" name="chest" required />
+        <button type="button" class="unit-btn" data-target="chest">cm</button>
+      </div>
+    </div>
+
+    <!-- Waist -->
+    <div class="quiz-question">
+      <label for="waist">Waist Size:</label>
+      <div class="input-with-toggle">
+        <input type="number" id="waist" name="waist" required />
+        <button type="button" class="unit-btn" data-target="waist">cm</button>
+      </div>
+    </div>
+
+    <!-- Hips -->
+    <div class="quiz-question">
+      <label for="hips">Hip Size:</label>
+      <div class="input-with-toggle">
+        <input type="number" id="hips" name="hips" required />
+        <button type="button" class="unit-btn" data-target="hips">cm</button>
+      </div>
+    </div>
+
+    <!-- Undertone -->
+  <div class="quiz-question">
+  <p>Skin Undertone:</p>
+  <div class="undertone-options">
+    <div class="undertone-card" data-tone="Cool">
+      <span>Cool</span>
+    </div>
+    <div class="undertone-card" data-tone="Warm">
+      <span>Warm</span>
+    </div>
+    <div class="undertone-card" data-tone="Neutral">
+      <span>Neutral</span>
+    </div>
+    <input type="hidden" name="undertone" id="undertone" required />
+  </div>
+</div>
+
+    <!-- Submit -->
+    <button type="submit" class="submit-btn">Get My Style Match</button>
+  </form>
+
+  <!-- Result Display -->
+  <div id="resultBox" class="result-box" style="display: none;">
+    <h3>Your Style Summary</h3>
+    <p id="resultText"></p>
+      <a href="profile.html" class="back-to-profile">Back to Profile</a>
+  </div>
+</section>
+
+  <footer>
+    <a href="profile.html"><i class="fa fa-user"></i><span>Profile</span></a>
+    <a href="home.html"><i class="fa fa-home"></i><span>Home</span></a>
+    <a href="ootd.html"><i class="fa fa-camera"></i><span>OOTD</span></a>
+    <a href="blog.html"><i class="fa fa-pencil"></i><span>Blog</span></a>
+  </footer>
+
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Unit toggle
+  document.querySelectorAll(".unit-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      btn.textContent = btn.textContent === "cm" ? "inch" : "cm";
+    });
+  });
+
+  // Gender card selection
+  const genderCards = document.querySelectorAll('.gender-card');
+  const genderInput = document.getElementById('gender');
+  genderCards.forEach(card => {
+    card.addEventListener('click', () => {
+      genderCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      genderInput.value = card.dataset.gender;
+    });
+  });
+
+  // Undertone card selection
+  const undertoneCards = document.querySelectorAll('.undertone-card');
+  const undertoneInput = document.getElementById('undertone');
+  undertoneCards.forEach(card => {
+    card.addEventListener('click', () => {
+      undertoneCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      undertoneInput.value = card.dataset.tone;
+    });
+  });
+
+  // Theme toggle
+  const toggle = document.getElementById('themeToggle');
+  toggle.addEventListener('change', () => {
+    document.body.classList.toggle('light');
+  });
+
+  // Form submission
+  document.getElementById("measurementQuiz").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const gender = document.getElementById("gender").value;
+    const height = document.getElementById("height").value;
+    const heightUnit = document.querySelector('[data-target="height"]').textContent;
+    const undertone = document.getElementById("undertone").value;
+
+    const chest = +document.getElementById("chest").value;
+    const waist = +document.getElementById("waist").value;
+    const hips = +document.getElementById("hips").value;
+
+    const bodyType = hips > chest ? "Pear" : chest > hips ? "Apple" : "Rectangle";
+
+        // Save results to localStorage
+        const quizResults = {
+          measurements: {
+            height: `${height} ${heightUnit}`,
+            chest: `${chest} cm`,
+            waist: `${waist} cm`,
+            hip: `${hips} cm`,
+            bodyType: bodyType
+          },
+          gender: gender,
+          undertone: undertone,
+          primaryStyle: bodyType === "Pear" ? "Classic" : bodyType === "Apple" ? "Modern" : "Minimalist",
+          colorPalette: undertone === "Cool" ? "Cool Tones" : undertone === "Warm" ? "Warm Tones" : "Neutral Tones",
+          styles: [bodyType === "Pear" ? "Classic" : bodyType === "Apple" ? "Modern" : "Minimalist", "Casual", "Street Style"]
+        };
+
+        localStorage.setItem('quizResults', JSON.stringify(quizResults));
+
+    const result = `You are a ${gender.toLowerCase()} with a height of ${height} ${heightUnit}. 
+    Your body type is likely <strong>${bodyType}</strong> and your undertone is <strong>${undertone}</strong>.`;
+
+    document.getElementById("resultText").innerHTML = result;
+    document.getElementById("resultBox").style.display = "block";
+  });
+});
+</script>
+</body>
+</html>

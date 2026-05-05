@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fashionify Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-dark: #FF007A;
+      --bg-dark: #1C1C24;
+      --text-dark: #fff;
+      --accent: #C8A2C8;
+      --bg-light: #fff;
+      --text-light: #C8A2C8;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.3s, color 0.3s;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      padding-bottom: 80px;
+      overflow-x: hidden;
+    }
+
+    body.light {
+      background: #fdf6ff;
+      color: #000;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 1rem 2rem;
+      background-color: #FF007A;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .theme-toggle,
+    .logo,
+    .header-icons {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    body.light header {
+      background-color: #C8A2C8;
+      color: var(--bg-light);
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      justify-content: start;
+      font-size: 24px;
+      margin-left: 30px;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-left: auto;
+    }
+
+    .header-icons a {
+      color: white;
+      text-decoration: none;
+      margin-right: 30px;
+      margin-left: 0;
+      font-size: 1.4rem;
+    }
+
+    .theme-toggle {
+      top: 48px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 32px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #444;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "🌙";
+      height: 24px;
+      width: 24px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: .4s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    input:checked + .slider {
+      background-color: white;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+      content: "☀️";
+    }
+
+    .section {
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: color 0.3s ease;
+    }
+
+    body.light .section-title {
+      color: #000;
+    }
+
+    .section-title::before,
+    .section-title::after {
+      content: '✦';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--accent);
+      transition: color 0.3s ease;
+    }
+
+    .section-title::before {
+      left: -40px;
+    }
+
+    .section-title::after {
+      right: -40px;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .loading {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 2rem;
+      color: var(--accent);
+      font-size: 1.2rem;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .blog-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .blog-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .blog-content {
+      padding: 1.5rem;
+    }
+
+    .blog-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-dark);
+    }
+
+    body.light .blog-title {
+      color: #000;
+    }
+
+    .blog-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--primary-dark);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    body.light .blog-meta {
+      color: var(--accent);
+    }
+
+    .blog-excerpt {
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    body.light .blog-excerpt {
+      color: #000;
+    }
+
+    .read-more {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    body.light .read-more {
+      color: var(--accent);
+    }
+
+    .read-more:hover {
+      opacity: 0.8;
+    }
+
+    .category-tag {
+      background: var(--primary-dark);
+      color: var(--bg-light);
+      padding: 0.3rem 0.8rem;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      margin-right: 0.5rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.light .category-tag {
+      background: var(--accent);
+      color: var(--bg-dark);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #FF007A;
+      color: var(--bg-dark);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    body.light footer {
+      background-color: #C8A2C8;
+      color: var(--bg-light);
+    }
+
+    footer a {
+      text-decoration: none;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+
+      .header-icons {
+        justify-content: center;
+        margin-left: 0;
+      }
+
+      .header-icons a {
+        margin-left: 0;
+      }
+
+      .blog-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">Fashionify</div>
+    <div class="header-icons">
+      <a href="favorites.html"><i class="fa fa-heart"></i></a>
+      <label class="switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+
+  <div class="section">
+    <h2 class="section-title">Latest Fashion News</h2>
+    <div id="news-container" class="blog-grid">
+      <!-- News articles will be dynamically inserted here -->
+      <div class="loading">Loading latest fashion news...</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Style Guides</h2>
+    <div class="blog-grid">
+      <article class="blog-card">
+        <img src="https://i.pinimg.com/736x/f1/d2/66/f1d266ab11c2a3ef20319823bf1a2c2b.jpg" alt="Summer Style" class="blog-image">
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span>May 1, 2025</span>
+            <span class="category-tag">Style Guide</span>
+          </div>
+          <h3 class="blog-title">Summer Style Essentials 2025</h3>
+          <p class="blog-excerpt">Your complete guide to staying stylish and comfortable during the summer months, featuring the season's must-have pieces and styling tips.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+      </article>
+
+      <article class="blog-card">
+        <img src="https://i.pinimg.com/736x/c8/cb/07/c8cb07c7f24bf4be8308fbf7916e9657.jpg" alt="Workwear" class="blog-image">
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span>April 25, 2025</span>
+            <span class="category-tag">Workwear</span>
+          </div>
+          <h3 class="blog-title">Modern Workwear: Professional Style Guide</h3>
+          <p class="blog-excerpt">How to build a versatile work wardrobe that's both professional and stylish, perfect for the modern workplace.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+      </article>
+
+      <article class="blog-card">
+        <img src="https://i.pinimg.com/736x/bd/db/a5/bddba5aa98aa64716d32a35ad11ed340.jpg" alt="Street Style" class="blog-image">
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span>April 15, 2025</span>
+            <span class="category-tag">Street Style</span>
+          </div>
+          <h3 class="blog-title">Street Style: Urban Fashion Trends</h3>
+          <p class="blog-excerpt">Exploring the latest street style trends and how to incorporate them into your everyday wardrobe.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+      </article>
+    </div>
+  </div>
+
+
+  <footer>
+    <a href="profile.html"><i class="fa fa-user"></i><span>Profile</span></a>
+    <a href="home.html"><i class="fa fa-home"></i><span>Home</span></a>
+    <a href="ootd.html"><i class="fa fa-camera"></i><span>OOTD</span></a>
+    <a href="blog.html"><i class="fa fa-pencil"></i><span>Blog</span></a>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    toggle.addEventListener('change', () => {
+      document.body.classList.toggle('light');
+    });
+
+    // Function to fetch and display news
+    async function fetchFashionNews() {
+      const newsContainer = document.getElementById('news-container');
+      const loadingDiv = newsContainer.querySelector('.loading');
+      
+      try {
+        console.log('Fetching news...');
+        // Using a different CORS proxy that doesn't require demo access
+        const corsProxy = 'https://api.allorigins.win/get?url=';
+        // Simplified fashion news query
+        const apiUrl = 'https://newsapi.org/v2/everything?q=fashion&domains=vogue.com,harpersbazaar.com,elle.com,wwd.com,fashionista.com&language=en&sortBy=publishedAt&pageSize=20&apiKey=82050a1c937e4f288b8c635ea0b0704b';
+        
+        console.log('Making request to:', corsProxy + encodeURIComponent(apiUrl));
+        const response = await fetch(corsProxy + encodeURIComponent(apiUrl));
+        
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        }
+        
+        const proxyData = await response.json();
+        const data = JSON.parse(proxyData.contents);
+        console.log('Received data:', data);
+        
+        if (data.articles && data.articles.length > 0) {
+          // Remove loading message
+          loadingDiv.remove();
+          
+          // Function to determine category based on content
+          function getCategory(article) {
+            const content = `${article.title} ${article.description}`.toLowerCase();
+            const categories = {
+              'Runway': ['runway', 'fashion show', 'collection', 'catwalk'],
+              'Trends': ['trend', 'style', 'look', 'seasonal'],
+              'Designers': ['designer', 'creative director', 'brand'],
+              'Celebrity': ['celebrity', 'star', 'actor', 'actress', 'singer'],
+              'Luxury': ['luxury', 'couture', 'haute', 'high-end'],
+              'Sustainability': ['sustainable', 'eco-friendly', 'ethical', 'green'],
+              'Street Style': ['street style', 'streetwear', 'urban'],
+              'Beauty': ['beauty', 'makeup', 'skincare', 'cosmetics'],
+              'Accessories': ['accessories', 'jewelry', 'bags', 'shoes'],
+              'Events': ['event', 'gala', 'awards', 'ceremony']
+            };
+
+            for (const [category, keywords] of Object.entries(categories)) {
+              if (keywords.some(keyword => content.includes(keyword))) {
+                return category;
+              }
+            }
+            return 'Fashion';
+          }
+          
+          // Display articles (minimum 6, more if available)
+          const articlesToShow = Math.max(6, Math.min(data.articles.length, 12));
+          data.articles.slice(0, articlesToShow).forEach(article => {
+            const articleElement = document.createElement('article');
+            articleElement.className = 'blog-card';
+            
+            const date = new Date(article.publishedAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+
+            const category = getCategory(article);
+
+            articleElement.innerHTML = `
+              <img src="${article.urlToImage || 'https://via.placeholder.com/400x200?text=Fashion+News'}" 
+                   alt="${article.title}" 
+                   class="blog-image"
+                   onerror="this.src='https://via.placeholder.com/400x200?text=Fashion+News'">
+              <div class="blog-content">
+                <div class="blog-meta">
+                  <span>${date}</span>
+                  <span class="category-tag">${category}</span>
+                </div>
+                <h3 class="blog-title">${article.title}</h3>
+                <p class="blog-excerpt">${article.description || 'Read more about this fashion story...'}</p>
+                <a href="${article.url}" target="_blank" class="read-more">Read More →</a>
+              </div>
+            `;
+            
+            newsContainer.appendChild(articleElement);
+          });
+        } else {
+          loadingDiv.textContent = 'No fashion news available at the moment.';
+        }
+      } catch (error) {
+        console.error('Error fetching news:', error);
+        loadingDiv.textContent = `Failed to load fashion news: ${error.message}. Please try again later.`;
+      }
+    }
+
+    // Fetch news when the page loads
+    document.addEventListener('DOMContentLoaded', fetchFashionNews);
+  </script>
+</body>
+
+</html>

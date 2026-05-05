@@ -1,22 +1,19 @@
 {
-  "name": "fashionify-backend",
+  "name": "outfit_rec",
   "version": "1.0.0",
-  "description": "",
+  "description": "A smart, web-based application that provides personalized fashion suggestions by analyzing user preferences, behavior, and trending fashion data. It enhances the online shopping experience with intelligent recommendations and seamless integration with e-commerce and social media platforms.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "bcryptjs": "^3.0.2",
-    "body-parser": "^2.2.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "mongoose": "^8.13.2"
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "mongodb": "^7.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.5.3"
   }
 }
