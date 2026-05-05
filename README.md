@@ -2,7 +2,7 @@
 # 👗 Fashion Adviser
 
 A smart, web-based application that provides personalized fashion suggestions by analyzing user preferences, behavior, and trending fashion data. It enhances the online shopping experience with intelligent recommendations and seamless integration with e-commerce and social media platforms.
-Link:https://virtual-fashion-advisor.netlify.app/
+Link:https://vogue-ai-seven.vercel.app/
 
 ## 📌 Table of Contents
 
